@@ -1,26 +1,19 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import * as userActions from '../../../actions/userActions';
 
 class Users extends Component {
 
-  constructor() {
-    super();
-
-    this.state = {
-      users: []
-    }
-  }
-
   async componentDidMount(){
-    const resp = await axios.get( 'https://jsonplaceholder.typicode.com/users') ;
-    this.setState({
-      users: resp.data
-    })
+
+    // Aca se llama al actions que esta en mi reducer para traer a todos los usuarios. 
+    this.props.getAll();
   }
 
   placeRow = () => (
 
-    this.state.users.map( element => {
+    this.props.users.map( element => {
 
       return (
         <tr key={element.id}>
@@ -58,4 +51,8 @@ class Users extends Component {
   }
 }
 
-export default Users;
+const mapStateToProps = (reducers) => {
+    return reducers.userReducer;
+}
+
+export default connect( mapStateToProps , userActions )(Users);
