@@ -1,0 +1,49 @@
+// La estructura de las carpetas para ser utilizadas con Redux suele segmentarse en: 
+- Actions 
+- Components 
+- Reducers
+- Types
+
+En la carpeta de 'actions' se colocaran todas las acciones que van a utilizar los reducers al momento de usar el dispatch.
+
+    import axios from 'axios'; // Esta libreria es para poder realizar llamadas HTTPS
+    import { GET_ALL } from '../types/userTypes' // Typos como constantes
+
+    export const getAll = () => async ( dispatch ) => { // El nombre de las funciones que van a ser utilizadas al momento de pasar por el reducer.
+        const resp = await axios.get( 'https://jsonplaceholder.typicode.com/users') ;
+        
+        dispatch({
+            type: GET_ALL,
+            payload: resp.data,
+        })
+    } 
+
+En la carpeta de Components se colocan los elementos de UI que manejan la apliación.
+
+En la carpeta de Reducers se colocan los Reducers por cada elemento y el index.js donde se coloca el siguiente codigo:
+    import { combineReducers } from 'redux';
+    import userReducer from './userReducer';
+
+    export default combineReducers({
+        userReducer
+    });
+
+Mientras que la estructura de los Reducers siguen la siguiente:
+    import { GET_ALL } from '../types/userTypes' // Typos como constantes
+
+    const INITIAL_STATE = { // Estado inicial de las variables
+        users: []
+    };
+
+    export default ( state = INITIAL_STATE , action ) => { //Se exportan los estados iniciales junto a los diferentes actions
+        switch ( action.type ) {
+            case GET_ALL:
+                return { ...state, users: action.payload}
+
+            default: return state
+        }
+    }
+
+
+En la carpeta de types solo irian los valores como constantes para evitar errores de tipeo y mejorar la escalabilidad.
+Ej. export const GET_ALL = "get_all";
