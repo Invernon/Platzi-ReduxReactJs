@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { connect } from 'react-redux';
 import * as userActions from '../../../actions/userActions';
+
+
+import HandleError from '../../error/containers/handleError';
+import LoadingContainer from '../../loader/containers/loader';
+import UserTable from '../components/userTable';
 
 class Users extends Component {
 
@@ -27,26 +31,13 @@ class Users extends Component {
 
   render() {
     return (
+
+    <LoadingContainer loading ={ this.props.loading }>
       <div className="Margen">
-        <table className="Table">
-          <thead>
-            <tr>
-              <th>
-                Nombre
-            </th>
-              <th>
-                Correo
-            </th>
-              <th>
-                Enlace
-            </th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.placeRow()}
-          </tbody>
-        </table>
+        <h1> Usuarios </h1>
+        <UserTable usersData={ this.placeRow() } />
       </div>
+    </LoadingContainer>
     )
   }
 }
