@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_ALL, LOADING, ERROR } from '../types/userTypes'
+import { GET_ALL, LOADING, ERROR, GET_BY_ID } from '../types/userTypes'
 
 export const getAll = () => async ( dispatch ) => {
 
@@ -14,6 +14,34 @@ export const getAll = () => async ( dispatch ) => {
         dispatch({
             type: GET_ALL,
             payload: resp.data,
+            error: ''
+        })
+
+    } catch (error) {
+        console.error('Error: ' , error.message );
+        dispatch({
+            type: ERROR,
+            payload: error.message
+        })
+    }
+    
+    
+} 
+
+export const getById = (id) => async ( dispatch , getState ) => {
+
+    dispatch({
+        type: LOADING,
+        payload: true,
+    })
+
+    try {
+        const resp = await axios.get( `https://jsonplaceholder.typicode.com/users/${id}`);
+        
+        dispatch({
+            type: GET_BY_ID,
+            payload: resp.data,
+            error: ''
         })
 
     } catch (error) {
