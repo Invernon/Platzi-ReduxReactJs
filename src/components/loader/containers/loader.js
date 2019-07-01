@@ -1,5 +1,6 @@
 import React , { Component} from 'react';
 import LoaderDefault from '../components/loaderDefault';
+import HandleError from '../../error/containers/handleError';
 
 class LoaderContainer extends Component {
 
@@ -10,6 +11,7 @@ class LoaderContainer extends Component {
                     <LoaderDefault />
                 ) 
             }
+
             return (   
                 this.props.children
             )

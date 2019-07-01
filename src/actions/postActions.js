@@ -1,5 +1,8 @@
 import axios from 'axios';
-import { GET_BY_USER, LOADING, ERROR } from '../types/postTypes'
+import { GET_BY_USER, LOADING, ERROR } from '../types/postTypes';
+import * as userTypes from '../types/userTypes';
+
+const { GET_ALL: GET_ALL_USERS } = userTypes;
 
 // Nunca se traeran todas las publicaciones. 
 // export const getAll = () => async ( dispatch ) => {
@@ -32,7 +35,8 @@ import { GET_BY_USER, LOADING, ERROR } from '../types/postTypes'
 // Se puede acceder al estado desde el Action haciendo uso de getState.
 export const getByUser = ( id ) => async ( dispatch , getState ) => {
 
-    // const { users } = getState().userReducer; 
+    const { users } = getState().userReducer;
+    const { posts } = getState().postReducer;
 
     dispatch({
         type: LOADING,
@@ -41,10 +45,32 @@ export const getByUser = ( id ) => async ( dispatch , getState ) => {
 
     try {
         const res = await axios.get( `http://jsonplaceholder.typicode.com/posts?userId=${id}`);
-        
+
+        const updated_posts = [
+            ...posts,
+            res.data
+        ]
+
+        // Useless: 
+        const post_key = updated_posts.length - 1;
+        const user_pos = id - 1;
+
+        // Update Users - Desde lo que se encuentre en el reducer
+        const users_updated = [...users];
+
+        users_updated[user_pos] = {
+            ...users[user_pos],
+            post_key
+        }
+
+        dispatch({
+            type: GET_ALL_USERS,
+            payload: users_updated
+        })
+    
         dispatch({
             type: GET_BY_USER,
-            payload: res.data,
+            payload: updated_posts,
             error: ''
         })
 

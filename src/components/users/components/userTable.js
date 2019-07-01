@@ -1,14 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+
 
 const UserTable = ( props ) => {
-    
-    const placeRow = () => (
 
-      props.users.map((element, key) => {
+    const placeRow = () => (
+      
+      props.users.map( (element, key) => {
 
         return (
-          <tr key={element.key}>
+          <tr key={key}>
             <td> {element.name} </td>
             <td> {element.email} </td>
             <td> {element.website} </td>
@@ -44,4 +47,8 @@ const UserTable = ( props ) => {
     )
 }
 
-export default UserTable;
+const mapStateToProps = (reducers) => {
+  return reducers.userReducer;
+}
+
+export default  connect(mapStateToProps)(UserTable);

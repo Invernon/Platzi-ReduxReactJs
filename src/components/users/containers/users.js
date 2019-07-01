@@ -7,22 +7,21 @@ import UserTable from '../components/userTable';
 
 class Users extends Component {
 
-  async componentDidMount() {
+  componentDidMount() {
 
     // Aca se llama al actions que esta en mi reducer para traer a todos los usuarios. 
 
-    if( !this.props.users.length < 2 ){
+    if( !this.props.users.length ){
       this.props.getAll();
     }
   }
 
   render() {
-  
     return (
-      <LoadingContainer loading={this.props.loading}>
+      <LoadingContainer loading={ this.props.loading }>
         <div className="Margen">
           <h1> Usuarios </h1>
-          <UserTable users={ this.props.users } />
+          <UserTable />
         </div>
       </LoadingContainer>
     )

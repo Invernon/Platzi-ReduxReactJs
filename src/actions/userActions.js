@@ -30,6 +30,8 @@ export const getAll = () => async ( dispatch ) => {
 
 export const getById = (id) => async ( dispatch , getState ) => {
 
+    const { posts } = getState().postReducer;
+
     dispatch({
         type: LOADING,
         payload: true,
@@ -38,6 +40,10 @@ export const getById = (id) => async ( dispatch , getState ) => {
     try {
         const resp = await axios.get( `https://jsonplaceholder.typicode.com/users/${id}`);
         
+        const userWithPosts = {
+            ...resp.data,
+        }
+
         dispatch({
             type: GET_BY_ID,
             payload: resp.data,
